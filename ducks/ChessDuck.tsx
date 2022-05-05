@@ -2,20 +2,23 @@ import { createSlice, createSelector, createReducer, createAction } from "@redux
 import React from 'react';
 import { AnyAction } from "redux";
 import ChessSquare from '../components/ChessSquare';
-import {pieceMap, initialPiecePositions} from '../utils/constants';
+import {initialBoardState, initialActivePieces} from '../utils/constants';
 import {RootState} from './store';
-
+import {ActivePiece} from '../types/ChessTypes';
 
 
 //*##########################
 //*         Types
 //*##########################
+
 interface ChessBoardStateType {
-    piecePositions: Array<Array<number>>;
+    boardState: Array<Array<number>>;
+    activePieces: Array<ActivePiece>;
 }
 
 const initialState:ChessBoardStateType = {
-    piecePositions:initialPiecePositions
+    boardState:initialBoardState,
+    activePieces: initialActivePieces
 }
 
 
@@ -33,5 +36,5 @@ export default chessReducer;
 //*##########################
 //*         Selectors
 //*##########################
-export const selectPiecePositionMap = (state:RootState) => state.chess.piecePositions;
-
+export const selectBoardState = (state:RootState) => state.chess.boardState;
+export const selectActivePieces = (state:RootState) => state.chess.activePieces;
