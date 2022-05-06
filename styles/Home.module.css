@@ -14,17 +14,18 @@
   
 }
 
+/* 
 .chessBoard {
   height: 600px;
   width: 600px;
   background-color: red;
-  /*Consider using linear-gradient as a background-image if chessSquare turns out too slow*/
+  
   top: 100px;
   left: 100px;
   display:grid;
   grid-template-columns: repeat(8, 75px);
   grid-template-rows: repeat(8, 75px);
-}
+} */
 
 .chessSquare {
   height: 100%;

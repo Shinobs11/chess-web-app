@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { StyleHTMLAttributes } from 'react';
 import { useState, useEffect, useRef, createRef, useLayoutEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -16,6 +16,23 @@ import {ActivePiece} from '../types/ChessTypes';
 
 
 function ChessBoard({...props}) {
+    const BOARD_HEIGHT = 800;
+    const BOARD_WIDTH = 800;
+
+    const styles:{[key:string]: React.CSSProperties} = {
+        board:{
+            height: BOARD_HEIGHT,
+            width: BOARD_WIDTH,
+            backgroundColor: 'red',
+            top: 100,
+            left: 100,
+            display: 'grid',
+            gridTemplateColumns: `repeat(8, ${BOARD_WIDTH/8}px)`,
+            gridTemplateRows: `repeat(8, ${BOARD_HEIGHT/8}px)`
+        }
+    }
+    
+
     const generateRefGrid = ()=>{
         let refGrid = (new Array(8)).fill(0).map(x=>Array(8).fill(0));  
         for(let i = 0; i<8; i++){
@@ -55,11 +72,13 @@ function ChessBoard({...props}) {
             return(
                 createPortal(
                     <Piece
-                    init_x={pos.x + pos.width/2}
-                    init_y={pos.y + pos.height/2}
+                    init_x={pos.x}
+                    init_y={pos.y}
                     squareH={pos.height}
                     squareW={pos.width}
                     pieceType={pieceType}
+                    col={col}
+                    row={row}
                     />,
                     ref.current,
                     [row, col].join("")
@@ -89,10 +108,13 @@ function ChessBoard({...props}) {
                 }
             }
         }
-    },[activePieces, hasRendered])
+    },[activePieces, hasRendered, refGrid, renderedPieces])
     return (
         <>
-        <div  className={styles.chessBoard}>
+        <div
+        style={styles.board}
+        // className={styles.chessBoard}
+        >
             {grid}
         </div>
         {

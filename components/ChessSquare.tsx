@@ -1,5 +1,4 @@
-import React,  { PureComponent, useEffect, useState } from 'react'
-import internal from 'stream';
+import React,  { forwardRef, PureComponent, useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css';
 
 interface PropsType{
@@ -8,7 +7,7 @@ interface PropsType{
     col: number;
 }
 
-const ChessSquare = React.forwardRef<HTMLDivElement, PropsType>(({color, row, col,...props}:PropsType, ref) => {
+const ChessSquare = forwardRef<HTMLDivElement, PropsType>(function ChessSquare({color, row, col,...props}:PropsType, ref){
     const decidedColor = (color == 0) ? styles.squareColor0 : styles.squareColor1;
     return (
         <div 
