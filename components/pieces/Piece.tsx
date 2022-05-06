@@ -1,9 +1,9 @@
-import React, {useState, forwardRef, useEffect} from 'react'
-import {pieceSVGMap, pieceMap} from '../../utils/constants'
+import React, { useState, forwardRef, useEffect } from 'react'
+import { pieceSVGMap, pieceMap } from '../../utils/constants'
 import { ReactSVG } from 'react-svg';
-
-
-interface PropTypes{
+import { DraggableCore, DraggableData, DraggableEvent, DraggableEventHandler } from 'react-draggable';
+import Draggable from 'react-draggable';
+interface PropTypes {
   pieceType: number;
   init_x: number;
   init_y: number;
@@ -13,55 +13,58 @@ interface PropTypes{
   row: number;
 }
 
-//! Bug fix: When resizing window, pieces don't adjust with the window
+//! TODOS: When resizing window, pieces don't adjust with the window
 
 
-function Piece({pieceType, init_x, init_y, squareH, squareW, col, row,...props}:PropTypes, ref:any) {
+function Piece({ pieceType, init_x, init_y, squareH, squareW, col, row, ...props }: PropTypes, ref: any) {
 
-  const h = squareH;
+  const h = squareH;          
   const w = squareW;
-  const [position, updatePosition] = useState([init_x, init_y]);
+  const [position, updatePosition] = useState([0, 0]);
 
-  const onDrag = (e:React.DragEvent) =>{    
-    updatePosition([e.clientX, e.clientY]);
-    
-  }
-  const onDragEnd = (e:React.DragEvent)=>{
-    updatePosition([init_x, init_y]);
+  const onStart:DraggableEventHandler = (e: DraggableEvent, data: DraggableData) => {
+    if(!(navigator.maxTouchPoints>0)){
+      e = e as MouseEvent
+      let rect = data.node.getBoundingClientRect();
+      updatePosition([e.clientX - (rect.left + w/2), e.clientY - (rect.top + h/2)]);
+    }
   }
 
+  const onDrag:DraggableEventHandler = (e: DraggableEvent, data: DraggableData) =>{
+    updatePosition([position[0] + data.deltaX, position[1] + data.deltaY]);
+  } 
+  const onStop:DraggableEventHandler = (e: DraggableEvent, data: DraggableData) =>{
+    updatePosition([0, 0]);
+  } 
   const svgStyling: string = `
   transform-origin: top left;
-  transform: scale(${squareW/45},${squareH/45});
+  transform: scale(${squareW / 45},${squareH / 45});
   `
 
-  const beforeInjection = (svg:SVGElement) =>{
+  const beforeInjection = (svg: SVGElement) => {
     svg.setAttribute("style", svgStyling);
   }
-  // const afterInjection:any = (err: any, svg:SVGElement) =>{
-  //   if(err){
-  //     console.warn(err);
-  //   }
-  //   svg.setAttribute("transform", `scale(${squareW/45},${squareH/45})`);
-  //   svg.setAttribute("style", `top:${init_y}; left:${init_x};`);
-  //   }
   
-    return (
-      <div
-   
-        ref={ref}
-        onDrag={onDrag}
-        onDragEnd={onDragEnd}
-      >
-        <ReactSVG
-        
-          src={pieceSVGMap[pieceType]}
-          beforeInjection={beforeInjection}
-          // afterInjection={afterInjection}
-          wrapper='div'
-        />
-      </div>
-      )
+
+  return (
+    
+
+    <Draggable
+    ref={ref}
+    position={{
+      x: position[0],
+      y: position[1]
+    }}
+    onStart={onStart}
+    onDrag={onDrag}
+    onStop={onStop}
+    >
+      <ReactSVG
+      src={pieceSVGMap[pieceType]}
+      beforeInjection={beforeInjection}
+      />
+    </Draggable>
+  )
 }
 
 
