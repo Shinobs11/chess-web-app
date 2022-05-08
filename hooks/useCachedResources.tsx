@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import {store} from '../ducks/store';
-
+import startWebSocket from "../websocket/startWebsocket";
 
 export default function useCachedResources(){
-  const [loading, complete] = useState(true);
-
+  const [isReady, complete] = useState(false);
   useEffect(()=>{
     //https://stackoverflow.com/questions/56324813/how-to-detect-touch-device-in-2019
     const isTouch = matchMedia('(hover: none)').matches;
@@ -15,15 +14,11 @@ export default function useCachedResources(){
     // store.dispatch(
       
     // )
+    startWebSocket();
 
 
+    complete(true);
+  }, [isReady]);
 
-
-  });
-
-
-
-
-
-
+  return isReady;
 }

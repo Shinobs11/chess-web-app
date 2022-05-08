@@ -32,10 +32,12 @@ function Piece({ pieceType, init_x, init_y, squareH, squareW, col, row, ...props
 
   const onDrag:DraggableEventHandler = (e: DraggableEvent, data: DraggableData) =>{
     updatePosition([position[0] + data.deltaX, position[1] + data.deltaY]);
-  } 
+  }
+   
   const onStop:DraggableEventHandler = (e: DraggableEvent, data: DraggableData) =>{
     updatePosition([0, 0]);
-  } 
+  }
+
   const svgStyling: string = `
   transform-origin: top left;
   transform: scale(${squareW / 45},${squareH / 45});
