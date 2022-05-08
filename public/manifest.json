@@ -2,5 +2,6 @@
   "name": "Chess Web App",
   "short_name": "Chess",
   "version": "0.0.0.0",
+  "manifest_version": 3,
   "author": "shinobs11"
 }

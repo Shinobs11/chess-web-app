@@ -22,7 +22,7 @@ export type {}
 //ifee to create websocket
 (function(){
   function connect(){
-    const ws = new WebSocket("localhost:3001/ws");
+    const ws = new WebSocket("ws://localhost:3001/ws");
     function onOpen(){
       self.postMessage("WebSocket has opened.");
     }

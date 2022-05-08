@@ -14,7 +14,7 @@ export default function startWebSocket(){
   
 
   if(window.Worker){
-    const wsWorker = new Worker("worker.js");
+    const wsWorker = new Worker(new URL("./wsWorker", import.meta.url));
     wsWorker.postMessage(testAction(5, 3));
     console.log("message posted!");
     wsWorker.addEventListener('message', (e:MessageEvent<any>)=>{
