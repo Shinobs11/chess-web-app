@@ -1,64 +1,47 @@
-// onmessage = function(e){
-//   console.log("Worker received message from main script");
-//   const result = e.data[0] + e.data[1];
-//   if(isNaN(result)){
-//     this.postMessage('Please write two numbers');
-//   }
-//   else {
-//     const workerResult = "Result: " + result;
-//     console.log("Worker: Positing message back to main script");
-//     this.postMessage(workerResult);
-//   }
-// }
-export type {}
-
-// const cacheName = "::chessWebSocketWorker";
-// const version = "v0.0.1";
+//needs to export something to play nice w/ babel
+import { createAction } from "@reduxjs/toolkit";
+import {Reducer, Action} from './startWebsocket';
 
 
 
 
 
-//ifee to create websocket
+//web worker iffee
 (function(){
+  //creates and connects ws to backend
   function connect(){
     const ws = new WebSocket("ws://localhost:3001/ws");
-    function onOpen(){
+    function onOpenHandler(){
       self.postMessage("WebSocket has opened.");
     }
-    function onMessage(e:MessageEvent<any>){
+    function onMessageHandler(e:MessageEvent<any>){
       self.postMessage("Received message: " + e.data);
     }
-    ws.onopen = onOpen;
-    ws.onmessage = onMessage;
+    
+    ws.onopen = onOpenHandler;
+    ws.onmessage = onMessageHandler;
     return ws;
   }
 const ws = connect();
 
-interface Reducer{
-  [index:string]: Function
-}
+
+//reducer to handle messages sent in a redux-esque manner
+
+
 
 const reducer:Reducer = {
-  
-  testFunction: function (a:number, b:number) {
-    return a+b;
-  },
-  testWebSocket: function (str:string){
-    ws.send(str);
+  sendMessage(jsonStr:string){
+    ws.send(jsonStr);
   }
-
 }
 
-interface Action{
-  type: string;
-  payload: Array<any>;
-}
 
-onmessage = function (e:MessageEvent<Action>) {
+function onMessageHandler(e:MessageEvent<Action>) {
       if(reducer[e.data.type].length == e.data.payload.length){
-        let res = reducer[e.data.type].apply(this, e.data.payload);
-        postMessage(res);
+        let res = reducer[e.data.type].apply(self, e.data.payload);
+        if(res){
+          postMessage(res);
+        }
       }
       else{
         console.warn("Invalid parameters passed to reducer function");
@@ -66,6 +49,7 @@ onmessage = function (e:MessageEvent<Action>) {
     
 }
 
+onmessage = onMessageHandler;
 
 
 
