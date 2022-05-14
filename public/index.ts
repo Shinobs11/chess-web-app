@@ -1,0 +1,12 @@
+export {default as WhitePawn} from './Chess_plt45.svg';
+export {default as BlackPawn} from './Chess_pdt45.svg';
+export {default as WhiteKnight} from './Chess_klt45.svg';
+export {default as BlackKnight} from './Chess_kdt45.svg';
+export {default as WhiteQueen} from './Chess_qlt45.svg';
+export {default as BlackQueen} from './Chess_qdt45.svg';
+export {default as WhiteBishop} from './Chess_blt45.svg';
+export {default as BlackBishop} from './Chess_bdt45.svg';
+export {default as WhiteRook} from './Chess_rlt45.svg';
+export {default as BlackRook} from './Chess_rdt45.svg';
+export {default as WhiteKing} from './Chess_klt45.svg';
+export {default as BlackKing} from './Chess_kdt45.svg';

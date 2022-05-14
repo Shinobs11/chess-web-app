@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 import styles from './piece.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { increment, decrement, add, MainStateType, selectCounter} from '../../ducks/MainDuck';
-import {store, RootState} from '../../ducks/store';
-import {postData} from '../../game/http';
+
 interface PropsType {
     init_x: number;
     init_y: number;

@@ -12,22 +12,25 @@ import {ActivePiece} from '../types/ChessTypes';
 //*##########################
 
 interface ChessBoardStateType {
+    gameState: string
     boardState: Array<Array<number>>;
     activePieces: Array<ActivePiece>;
 }
 
 const initialState:ChessBoardStateType = {
-    boardState:initialBoardState,
+    gameState: "",
+    boardState: initialBoardState,
     activePieces: initialActivePieces
 }
 
 
-//okay I hate redux-toolkit
-
+export const updateGameState = createAction<string>("chess/UpdateGameState");
 
 
 const chessReducer = createReducer(initialState, (builder) =>{
-
+    builder.addCase(updateGameState, (state, {payload})=>{
+      return {...state, gameState:payload};
+    })
     }
 )
 
@@ -38,3 +41,4 @@ export default chessReducer;
 //*##########################
 export const selectBoardState = (state:RootState) => state.chess.boardState;
 export const selectActivePieces = (state:RootState) => state.chess.activePieces;
+export const selectGameState = (state:RootState) => state.chess.gameState;

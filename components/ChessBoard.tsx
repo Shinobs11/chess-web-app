@@ -1,4 +1,4 @@
-import React, { StyleHTMLAttributes } from 'react';
+import React, { PropsWithChildren, StyleHTMLAttributes } from 'react';
 import { useState, useEffect, useRef, createRef, useLayoutEffect, useId } from 'react';
 import { createPortal } from 'react-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,16 +6,20 @@ import styles from '../styles/Home.module.css';
 import ChessSquare from './ChessSquare';
 import TestPiece from '../components/pieces/TestPiece';
 import Piece from './pieces/Piece';
-import { postData } from '../game/http';
+import ChessGame from './ChessGame';
 import { selectBoardState, selectActivePieces} from '../ducks/ChessDuck';
 import {initialBoardState} from '../utils/constants';
 import {ActivePiece} from '../types/ChessTypes';
+import Button from './Button';
+
+interface PropType {
+    actionMap:{
+        [index:string]: ()=>any
+    }
+}
 
 
-
-
-
-function ChessBoard({...props}) {
+function ChessBoard({actionMap,...props}:PropsWithChildren<PropType>) {
     const BOARD_HEIGHT = 800;
     const BOARD_WIDTH = 800;
 
@@ -37,7 +41,7 @@ function ChessBoard({...props}) {
         let refGrid = (new Array(8)).fill(0).map(x=>Array(8).fill(0));  
         for(let i = 0; i<8; i++){
             for(let j = 0; j<8; j++){
-                refGrid[i][j] = createRef<HTMLDivElement>();
+                refGrid[i][j] = createRef<SVGElement>();
             }
         }
         return refGrid;
@@ -86,6 +90,8 @@ function ChessBoard({...props}) {
             )
         }
     }
+
+
     const [hasRendered, updateHasRendered] = useState(false);
     const [{grid, refGrid}, updateGrid] = useState(renderSquareGrid(generateRefGrid()));
     const activePieces = useSelector(selectActivePieces);
@@ -109,19 +115,33 @@ function ChessBoard({...props}) {
             }
         }
     },[activePieces, hasRendered, refGrid, renderedPieces])
+
+
+    
     return (
         <>
-        <div
-        style={styles.board}
-        // className={styles.chessBoard}
-        >
-            {grid}
-        </div>
-        {
-          Array.from(renderedPieces.values())
-        }
+            <Button onClick={actionMap["CreateGame"]}>
+                CreateGame
+            </Button>
+            <Button onClick={actionMap["WebSocketOpen"]}>
+                WebSocketOpen
+            </Button>
+            <Button onClick={actionMap["CloseWebSocket"]}>
+                CloseWebSocket
+            </Button>
+            <div
+            style={styles.board}
+            // className={styles.chessBoard}
+            >
+                {grid}
+            </div>
+            {
+            Array.from(renderedPieces.values())
+            }
         </>
     );
+    
+  
 }
 
 export default ChessBoard;

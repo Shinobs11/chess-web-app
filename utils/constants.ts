@@ -1,19 +1,19 @@
 
 import { ActivePiece } from '../types/ChessTypes';
-
-export const pieceSVGMap: string[] = [
-   "./Chess_plt45.svg",
-   "./Chess_pdt45.svg",
-   "./Chess_nlt45.svg",
-   "./Chess_ndt45.svg",
-   "./Chess_blt45.svg",
-   "./Chess_bdt45.svg",
-   "./Chess_rlt45.svg",
-   "./Chess_rdt45.svg",
-   "./Chess_qlt45.svg",
-   "./Chess_qdt45.svg",
-   "./Chess_klt45.svg",
-   "./Chess_kdt45.svg",
+import * as P from '../public/index'
+export const pieceSVGMap: { [index: number]: any } = [
+    P.WhitePawn,
+    P.BlackPawn,
+    P.WhiteKnight,
+    P.BlackKnight,
+    P.WhiteBishop,
+    P.BlackBishop,
+    P.WhiteRook,
+    P.BlackRook,
+    P.WhiteQueen,
+    P.BlackQueen,
+    P.WhiteKing,
+    P.BlackKing
 ]
 
 
@@ -34,6 +34,21 @@ export const pieceMap = {
     "empty": 12
 }
 
+export const pieceTagsFromNumber: { [index: number]: string } = {
+    0: "white pawn",
+    1: "black pawn",
+    2: "white knight",
+    3: "black knight",
+    4: "white bishop",
+    5: "black bishop",
+    6: "white rook",
+    7: "black rook",
+    8: "white queen",
+    9: "black queen",
+    10: "white king",
+    11: "black king"
+}
+
 
 export const initialBoardState = [
     [pieceMap.b_rook, pieceMap.b_knight, pieceMap.b_bishop, pieceMap.b_king, pieceMap.b_queen, pieceMap.b_bishop, pieceMap.b_knight, pieceMap.b_rook],
@@ -47,7 +62,7 @@ export const initialBoardState = [
 ]
 
 export const initialActivePieces: Array<ActivePiece> =
-[
+    [
         {
             "pieceType": 7,
             "position": [
